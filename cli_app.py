@@ -12,12 +12,21 @@ cur = conn.cursor()
 
 def add_student():
     sid = int(input("Student ID: "))
+
+    # Check if student_id already exists
+    cur.execute("SELECT 1 FROM Student WHERE student_id = %s", (sid,))
+    if cur.fetchone():
+        print("Student ID already exists.\n")
+        return
+
     name = input("Name: ")
     email = input("Email: ")
     major = input("Major: ")
+
     cur.execute("INSERT INTO Student VALUES (%s, %s, %s, %s)", (sid, name, email, major))
     conn.commit()
     print("Student added.\n")
+
 
 def view_courses():
     cur.execute("SELECT course_id, title FROM Course")
@@ -26,14 +35,50 @@ def view_courses():
     print()
 
 def enroll_student():
-    eid = int(input("Enrollment ID: "))
+    print("\n Available Courses:")
+    cur.execute("SELECT course_id, title FROM Course")
+    courses = cur.fetchall()
+    for cid, title in courses:
+        print(f"  {cid}: {title}")
+
+    eid = int(input("\nEnrollment ID: "))
     sid = int(input("Student ID: "))
-    cid = int(input("Course ID: "))
-    sem = input("Semester (e.g., Fall 2025): ")
-    grade = input("Grade (or NULL): ") or None
-    cur.execute("INSERT INTO Enrollment VALUES (%s, %s, %s, %s, %s)", (eid, sid, cid, sem, grade))
+    cid = int(input("Course ID (from above): "))
+
+    # Validate Course ID
+    cur.execute("SELECT 1 FROM Course WHERE course_id = %s", (cid,))
+    if not cur.fetchone():
+        print(" Invalid Course ID.\n")
+        return
+
+    # Validate Student ID
+    cur.execute("SELECT 1 FROM Student WHERE student_id = %s", (sid,))
+    if not cur.fetchone():
+        print(" Student not found.\n")
+        return
+
+    semester = input("Semester (e.g., Fall 2025): ").strip()
+    if not semester:
+        print(" Semester cannot be empty.\n")
+        return
+
+    grade = input("Grade (optional): ").strip().upper()
+    valid_grades = {"A", "A-", "B+", "B", "B-", "C+", "C", "C-", "D", "F"}
+
+    if grade == "":
+        grade = None
+    elif grade not in valid_grades:
+        print("Invalid grade. Use A, B+, C-, etc.\n")
+        return
+
+    cur.execute(
+        "INSERT INTO Enrollment VALUES (%s, %s, %s, %s, %s)",
+        (eid, sid, cid, semester, grade)
+    )
     conn.commit()
-    print("Enrolled\n")
+    print("Student enrolled successfully.\n")
+
+
 
 def view_enrollments():
     cur.execute("""
@@ -144,7 +189,7 @@ def main():
         elif choice == '10':
             break
         else:
-            print("❌ Invalid option\n")
+            print(" Invalid option\n")
 
     cur.close()
     conn.close()
