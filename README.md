@@ -20,11 +20,13 @@ This system simulates a basic university backend where:
 ---
 
 ## 📁 Project Structure
-.
-├── student_course_system.sql     # Full schema + sample data
-├── cli_app.py                    # Python CLI to interact with DB
-├── README.md                     # This file
-└── (optional) ER diagram image
+
+-  Requirements
+-  ER diagram 
+-  Schema Design
+-  student_course_system.sql    
+-  cli_app.py                    
+-  README.md                     
 
 ## Features
 - PostgreSQL schema with 4+ relational tables
