@@ -1,0 +1,18 @@
+# Bytecode
+__pycache__/
+*.pyc
+
+# DB backups
+*.sql~
+
+# VSCode settings (if used)
+.vscode/
+
+# macOS junk
+.DS_Store
+
+# Windows junk
+Thumbs.db
+
+# Environment files (if used)
+.env
