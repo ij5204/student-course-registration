@@ -26,7 +26,8 @@ This system simulates a basic university backend where:
 -  Schema Design
 -  student_course_system.sql    
 -  cli_app.py                    
--  README.md                     
+-  README.md
+-  Video demo                     
 
 ## Features
 - PostgreSQL schema with 4+ relational tables
@@ -40,6 +41,20 @@ psql -U postgres -d student_registration -f student_course_system.sql
 
 2. Run the Python CLI:
 python cli_app.py
+
+---
+
+## 🎬 Demo Video
+
+▶️ [Watch the demo](https://drive.google.com/file/d/1Xw0LAm8rAWgKWn_odCeMukR32Mc_rMgb/view?usp=drive_link)
+
+This video demonstrates:
+- Executing the SQL schema script
+- Running the Python CLI app
+- Adding students and enrolling them
+- Performing multi-table queries
+- Validating input and error handling
+
 
 ## Author
 Ishitaa Jain
